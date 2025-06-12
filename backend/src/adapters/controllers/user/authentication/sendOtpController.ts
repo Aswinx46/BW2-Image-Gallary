@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { IsendOtpUseCase } from "../../../domain/interface/useCaseInterface/user/authentication/sentOtpUseCaseInterface";
-import { HttpStatus } from "../../../domain/entities/statusCode";
-import { ERROR_MESSAGES } from "../../../domain/entities/errorMessages";
+import { IsendOtpUseCase } from "../../../../domain/interface/useCaseInterface/user/authentication/sentOtpUseCaseInterface";
+import { HttpStatus } from "../../../../domain/entities/statusCode";
+import { ERROR_MESSAGES } from "../../../../domain/entities/errorMessages";
+
 
 export class SendOtpController {
     private sendOtpUsecase: IsendOtpUseCase

@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import ImagePreview from "../otherComponents/ImagePreview"
+import { toast } from "sonner"
 
 interface ImageType {
   _id?: string
@@ -32,13 +34,34 @@ export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle
   const [selectedImage, setSelectedImage] = useState<ImageType | null>(null)
   const [editingTitle, setEditingTitle] = useState<string | null>(null)
   const [newTitle, setNewTitle] = useState("")
+  const [showPreview, setShowPreview] = useState<boolean>(false)
+  const [imageString, setImageString] = useState('')
+  const [imageFile, setImageFile] = useState<File | null>()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
-      handleUpload(file)
+      setImageString(URL.createObjectURL(file))
+      setShowPreview(true)
+      setImageFile(file)
+
     }
+  }
+
+  const handleSubmitImagePreview = () => {
+    if (!imageFile) {
+      toast('Please select a image')
+      return
+    }
+    setShowPreview(false)
+    handleUpload(imageFile)
+  }
+
+  const handleRemoveSelectedFile = () => {
+    setShowPreview(false)
+    setImageString('')
+    setImageFile(null)
   }
 
   const handleUpload = async (file: File) => {
@@ -91,13 +114,15 @@ export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle
     setNewTitle(image.title)
   }
 
+
+
   const sortedImages = [...images].sort((a, b) => a.imageOrder - b.imageOrder)
 
   return (
     <div className="min-h-screen bg-black text-white p-6">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-center">Image Gallery</h1>
-
+        {showPreview && <ImagePreview imageUrl={imageString} isOpen={showPreview} onSubmit={handleSubmitImagePreview} onClose={handleRemoveSelectedFile} />}
         {/* Upload Section */}
         <Card className="bg-gray-900 border-gray-800 mb-8">
           <CardContent className="p-6">

@@ -1,9 +1,9 @@
 import e, { Request, Response } from "express";
-import { IloginUserUseCase } from "../../../domain/interface/useCaseInterface/user/authentication/loginUserUseCaseInterface";
-import { HttpStatus } from "../../../domain/entities/statusCode";
-import { ERROR_MESSAGES } from "../../../domain/entities/errorMessages";
-import { IjwtService } from "../../../domain/interface/serviceInterface/jwtServiceInterface";
-import { setCookie } from "../../../framework/services/setCookite";
+import { HttpStatus } from "../../../../domain/entities/statusCode";
+import { ERROR_MESSAGES } from "../../../../domain/entities/errorMessages";
+import { setCookie } from "../../../../framework/services/setCookite";
+import { IloginUserUseCase } from "../../../../domain/interface/useCaseInterface/user/authentication/loginUserUseCaseInterface";
+import { IjwtService } from "../../../../domain/interface/serviceInterface/jwtServiceInterface";
 
 export class UserLoginController {
     private userLoginUserCase: IloginUserUseCase

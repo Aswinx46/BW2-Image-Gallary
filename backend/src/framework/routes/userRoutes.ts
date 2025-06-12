@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedFindImagesController, injectedImageUploadController, injectedSendOtpController, injectedSignupController, injectedUserLoginController, injectedVerifyOtpController } from "../DI/userInjection";
+import { injectedFindImagesController, injectedImageUploadController, injectedRefreshTokenController, injectedSendOtpController, injectedSignupController, InjectedtokenValidationMiddleware, injectedUserLoginController, injectedVerifyOtpController } from "../DI/userInjection";
 
 export class UserRoute {
     public userRouter: Router
@@ -20,11 +20,14 @@ export class UserRoute {
         this.userRouter.post('/login', (req: Request, res: Response) => {
             injectedUserLoginController.handleLogin(req, res)
         })
-        this.userRouter.post('/upload', (req: Request, res: Response) => {
+        this.userRouter.post('/upload', InjectedtokenValidationMiddleware, (req: Request, res: Response) => {
             injectedImageUploadController.handleImageUpload(req, res)
         })
-        this.userRouter.get('/images', (req: Request, res: Response) => {
+        this.userRouter.get('/images',InjectedtokenValidationMiddleware, (req: Request, res: Response) => {
             injectedFindImagesController.handleFindImages(req, res)
+        })
+        this.userRouter.post('/refresh', (req: Request, res: Response) => {
+            injectedRefreshTokenController.handleRefreshToken(req, res)
         })
     }
 }

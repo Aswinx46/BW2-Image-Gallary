@@ -4,15 +4,16 @@ import { Button } from '../ui/button';
 import { useUserLogin } from '@/hooks/userHooks';
 import { toast } from 'sonner';
 import type { UserRegisterType } from '@/types/userRegisterType';
-import { Link } from 'react-router-dom';
-import {useDispatch} from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux'
 import { addToken } from '@/store/slice/tokenSlice';
 function Login() {
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
     const initialValues = {
         email: '',
         password: ''
     }
+    const navigate = useNavigate()
     const userLoginMutation = useUserLogin()
     const validationSchema = yup.object().shape({
         email: yup.string().email("Invalid email format").required("Email is required"),
@@ -35,8 +36,10 @@ function Login() {
             onSuccess: (data) => {
                 console.log(data)
                 dispatch(addToken(data.accessToken))
-                localStorage.setItem('user',data.user.email)
+                localStorage.setItem('user', data.user.email)
+                localStorage.setItem('userId', data.user._id)
                 toast('user Logged')
+                navigate('/home')
             },
             onError: (err) => {
                 toast(err.message)

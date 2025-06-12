@@ -10,8 +10,9 @@ export class FindImagesOfUserController {
     }
     async handleFindImages(req: Request, res: Response): Promise<void> {
         try {
-            const userId = (req as any).user.id
+            const userId = (req as any).user.userId
             const images = await this.findImagesUseCase.find(userId)
+          
             res.status(HttpStatus.OK).json({ messages: "Images fetched", images })
         } catch (error) {
             console.log('error while finding images of user', error)

@@ -1,6 +1,7 @@
-import { userLogin, userSendOtp, userSignup, userVerifyOtp } from "@/services/userService"
+import { fetchImages, uploadImageCloudinary, uploadImageToTheDB, userLogin, userSendOtp, userSignup, userVerifyOtp } from "@/services/userService"
+import type { ImageType } from "@/types/imageType"
 import type { UserRegisterType } from "@/types/userRegisterType"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 
 export const useUserSignup = () => {
     return useMutation({
@@ -23,5 +24,24 @@ export const useUserVerifyOtp = () => {
 export const useUserLogin = () => {
     return useMutation({
         mutationFn: ({ email, password }: { email: string, password: string }) => userLogin(email, password)
+    })
+}
+
+export const useUploadImageToCloudinary = () => {
+    return useMutation({
+        mutationFn: (formdata: FormData) => uploadImageCloudinary(formdata)
+    })
+}
+
+export const useUploadImageToDB = () => {
+    return useMutation({
+        mutationFn: (data: ImageType) => uploadImageToTheDB(data)
+    })
+}
+
+export const useFetchImages = () => {
+    return useQuery({
+        queryKey: ['images'],
+        queryFn: fetchImages
     })
 }

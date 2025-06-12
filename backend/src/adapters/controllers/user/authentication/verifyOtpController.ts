@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { HttpStatus } from "../../../domain/entities/statusCode";
-import { ERROR_MESSAGES } from "../../../domain/entities/errorMessages";
-import { IverifyOtpUseCase } from "../../../domain/interface/useCaseInterface/user/authentication/verifyOtpUseCaseInterface";
+import { IverifyOtpUseCase } from "../../../../domain/interface/useCaseInterface/user/authentication/verifyOtpUseCaseInterface";
+import { HttpStatus } from "../../../../domain/entities/statusCode";
+import { ERROR_MESSAGES } from "../../../../domain/entities/errorMessages";
+
 
 export class VerifyOtpController {
     private verifyOtpUseCase: IverifyOtpUseCase

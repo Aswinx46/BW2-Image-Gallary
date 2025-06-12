@@ -1,10 +1,12 @@
 
+import { RefreshTokenController } from "../../adapters/controllers/user/authentication/refreshTokenController";
 import { SendOtpController } from "../../adapters/controllers/user/authentication/sendOtpController";
 import { SignUpController } from "../../adapters/controllers/user/authentication/signUpController";
 import { UserLoginController } from "../../adapters/controllers/user/authentication/userLoginController";
 import { VerifyOtpController } from "../../adapters/controllers/user/authentication/verifyOtpController";
 import { FindImagesOfUserController } from "../../adapters/controllers/user/imageUploading/findImagesOfUserController";
 import { ImageUploadingController } from "../../adapters/controllers/user/imageUploading/imageUploadingController";
+import { tokenValidationMiddleware } from "../../adapters/middlewares/refreshTokenCheckerMiddleware";
 import { ImageRepository } from "../../adapters/repository/imageRepository/imageRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
 import { SendOtpUseCase } from "../../useCases/user/authentication/sendOtpUseCase";
@@ -18,6 +20,9 @@ import { HashPassword } from "../bcrypt/hashPassword";
 import { emailService } from "../services/emailService";
 import { JwtService } from "../services/jwtService";
 import { OtpService } from "../services/otpService";
+
+
+
 
 
 //--------------------------------------------user signup---------------------------------------
@@ -49,3 +54,10 @@ export const injectedImageUploadController = new ImageUploadingController(imageU
 //----------------------------------------find images -------------------------------
 const findImagesUseCase = new FindImagesOfUserUseCase(imageDatabase)
 export const injectedFindImagesController = new FindImagesOfUserController(findImagesUseCase)
+
+//-------------------------------------refresh token ------------------------
+export const injectedRefreshTokenController = new RefreshTokenController(jwtService)
+
+
+//-------------------------------Middleware injection-------------------
+export const InjectedtokenValidationMiddleware = tokenValidationMiddleware(jwtService)
