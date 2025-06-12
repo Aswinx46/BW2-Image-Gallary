@@ -1,6 +1,7 @@
-import { IUserRepostoryInterface } from "../../domain/interface/repositoryInterface/userRepositoryInterface";
-import { IhashPassword } from "../../domain/interface/serviceInterface/IhashPasswordInterface";
-import { IuserSignupUseCase } from "../../domain/interface/useCaseInterface/user/userSignupUseCaseInterface";
+import { IUserRepostoryInterface } from "../../../domain/interface/repositoryInterface/userRepositoryInterface"
+import { IhashPassword } from "../../../domain/interface/serviceInterface/IhashPasswordInterface"
+import { IuserSignupUseCase } from "../../../domain/interface/useCaseInterface/user/authentication/userSignupUseCaseInterface"
+
 
 export class UserSignupUseCase implements IuserSignupUseCase {
     private userRepository: IUserRepostoryInterface

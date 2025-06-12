@@ -1,7 +1,8 @@
-import { IUserRepostoryInterface } from "../../domain/interface/repositoryInterface/userRepositoryInterface";
-import { IemailService } from "../../domain/interface/serviceInterface/emailService";
-import { IotpService } from "../../domain/interface/serviceInterface/otpServiceInterface";
-import { IsendOtpUseCase } from "../../domain/interface/useCaseInterface/user/sentOtpUseCaseInterface";
+import { IUserRepostoryInterface } from "../../../domain/interface/repositoryInterface/userRepositoryInterface"
+import { IemailService } from "../../../domain/interface/serviceInterface/emailService"
+import { IotpService } from "../../../domain/interface/serviceInterface/otpServiceInterface"
+import { IsendOtpUseCase } from "../../../domain/interface/useCaseInterface/user/authentication/sentOtpUseCaseInterface"
+
 
 export class SendOtpUseCase implements IsendOtpUseCase {
     private otpService: IotpService

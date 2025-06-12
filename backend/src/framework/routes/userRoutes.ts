@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedSendOtpController, injectedSignupController, injectedVerifyOtpController } from "../DI/userInjection";
+import { injectedFindImagesController, injectedImageUploadController, injectedSendOtpController, injectedSignupController, injectedUserLoginController, injectedVerifyOtpController } from "../DI/userInjection";
 
 export class UserRoute {
     public userRouter: Router
@@ -16,6 +16,15 @@ export class UserRoute {
         })
         this.userRouter.post('/verifyOtp', (req: Request, res: Response) => {
             injectedVerifyOtpController.handleVerifyOtp(req, res)
+        })
+        this.userRouter.post('/login', (req: Request, res: Response) => {
+            injectedUserLoginController.handleLogin(req, res)
+        })
+        this.userRouter.post('/upload', (req: Request, res: Response) => {
+            injectedImageUploadController.handleImageUpload(req, res)
+        })
+        this.userRouter.get('/images', (req: Request, res: Response) => {
+            injectedFindImagesController.handleFindImages(req, res)
         })
     }
 }

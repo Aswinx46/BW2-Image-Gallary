@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
-import { IuserSignupUseCase } from "../../../domain/interface/useCaseInterface/user/userSignupUseCaseInterface";
+
 import { HttpStatus } from "../../../domain/entities/statusCode";
 import { ERROR_MESSAGES } from "../../../domain/entities/errorMessages";
+import { IuserSignupUseCase } from "../../../domain/interface/useCaseInterface/user/authentication/userSignupUseCaseInterface";
 
 export class SignUpController {
     private signupUseCase: IuserSignupUseCase

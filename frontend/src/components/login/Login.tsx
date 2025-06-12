@@ -1,13 +1,19 @@
 import * as yup from 'yup'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { Button } from '../ui/button';
+import { useUserLogin } from '@/hooks/userHooks';
+import { toast } from 'sonner';
+import type { UserRegisterType } from '@/types/userRegisterType';
+import { Link } from 'react-router-dom';
+import {useDispatch} from 'react-redux'
+import { addToken } from '@/store/slice/tokenSlice';
 function Login() {
-
+    const dispatch=useDispatch()
     const initialValues = {
         email: '',
         password: ''
     }
-
+    const userLoginMutation = useUserLogin()
     const validationSchema = yup.object().shape({
         email: yup.string().email("Invalid email format").required("Email is required"),
         password: yup
@@ -24,8 +30,19 @@ function Login() {
             .required("Password is required"),
     });
 
-    const handleLogin = () => {
-        console.log('login')
+    const handleLogin = (values: UserRegisterType) => {
+        userLoginMutation.mutate({ email: values.email, password: values.password }, {
+            onSuccess: (data) => {
+                console.log(data)
+                dispatch(addToken(data.accessToken))
+                localStorage.setItem('user',data.user.email)
+                toast('user Logged')
+            },
+            onError: (err) => {
+                toast(err.message)
+                console.log('error while login', err)
+            }
+        })
     }
 
     return (
@@ -39,9 +56,13 @@ function Login() {
                             <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
                             <Field name="password" type="password" className="border-2 rounded-1xl h-10 p-3" placeholder="Enter Password" />
                             <ErrorMessage name='password' component="div" className="text-red-500 text-sm"></ErrorMessage>
-                            <Button type='submit'>LOGIN</Button>
+                            <Button type='submit'>{userLoginMutation.isPending ? "Logining....." : "Login"}</Button>
                         </Form>
                     </Formik>
+                </div>
+                <div className='flex '>
+                    <p>Dont have an Account ? </p>
+                    <Link to={'/signup'}>SIGNUP HERE</Link>
                 </div>
             </div>
         </div>

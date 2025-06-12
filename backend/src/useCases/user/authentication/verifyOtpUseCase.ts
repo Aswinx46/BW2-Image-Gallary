@@ -1,5 +1,6 @@
-import { IotpService } from "../../domain/interface/serviceInterface/otpServiceInterface";
-import { IverifyOtpUseCase } from "../../domain/interface/useCaseInterface/user/verifyOtpUseCaseInterface";
+import { IotpService } from "../../../domain/interface/serviceInterface/otpServiceInterface"
+import { IverifyOtpUseCase } from "../../../domain/interface/useCaseInterface/user/authentication/verifyOtpUseCaseInterface"
+
 
 export class VerifyOtpUseCase implements IverifyOtpUseCase {
     private otpService: IotpService

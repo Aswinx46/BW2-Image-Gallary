@@ -6,6 +6,7 @@ import OtpModal from "../otherComponents/OtpModal";
 import { useUserSendOTp, useUserSignup, useUserVerifyOtp } from "@/hooks/userHooks";
 import { toast } from "sonner"
 import type { UserRegisterType } from "@/types/userRegisterType";
+import { Link, useNavigate } from "react-router-dom";
 function SignUp() {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const [userData, setUserData] = useState<UserRegisterType | null>()
@@ -73,7 +74,7 @@ function SignUp() {
             console.log(error)
         }
     }
-
+    const navigate = useNavigate()
     const handleVerifyOtp = async (otp: string) => {
         try {
             if (!userData?.email) return;
@@ -83,6 +84,7 @@ function SignUp() {
                     toast('OTP Verified')
                     setIsOpen(false)
                     createUser()
+                    navigate('/login')
                 },
                 onError: (err) => {
                     console.log(err)
@@ -114,9 +116,13 @@ function SignUp() {
                             <div className=" min-h-[15px]">
                                 <ErrorMessage name="confirmPassword" component="div" className="text-red-500 text-sm" />
                             </div>
-                            <Button type="submit">SUBMIT</Button>
+                            <Button type="submit">{sendOtpMutation.isPending ? "Signing up....." : "Sign up"}</Button>
                         </Form>
                     </Formik>
+                </div>
+                <div className="flex">
+                    <p>Already Have An Account ? </p>
+                    <Link to={'/'}>LOGIN HERE</Link>
                 </div>
             </div>
         </div>

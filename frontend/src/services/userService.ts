@@ -4,7 +4,7 @@ import type { UserRegisterType } from "@/types/userRegisterType";
 
 export const userSignup = async (user: UserRegisterType) => {
     try {
-        const response = await axios.post('/signUp', { email:user.email ,password:user.password })
+        const response = await axios.post('/signUp', { email: user.email, password: user.password })
         return response.data
     } catch (error) {
         console.log('error while creating user', error)
@@ -30,5 +30,15 @@ export const userVerifyOtp = async (email: string, otp: string) => {
     } catch (error) {
         console.log('error while verifying otp', error)
         throw new Error(isAxiosError(error) ? error.response?.data.error : "error while verifying otp")
+    }
+}
+
+export const userLogin = async (email: string, password: string) => {
+    try {
+        const response = await axios.post('/login', { email, password })
+        return response.data
+    } catch (error) {
+        console.log('error while login user', error)
+        throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while user login')
     }
 }
