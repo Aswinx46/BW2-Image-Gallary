@@ -1,4 +1,4 @@
-import { fetchImages, uploadImageCloudinary, uploadImageToTheDB, userLogin, userSendOtp, userSignup, userVerifyOtp } from "@/services/userService"
+import { fetchImages, updateImage, updateTitle, uploadImageCloudinary, uploadImageToTheDB, userLogin, userSendOtp, userSignup, userVerifyOtp } from "@/services/userService"
 import type { ImageType } from "@/types/imageType"
 import type { UserRegisterType } from "@/types/userRegisterType"
 import { useMutation, useQuery } from "@tanstack/react-query"
@@ -43,5 +43,17 @@ export const useFetchImages = () => {
     return useQuery({
         queryKey: ['images'],
         queryFn: fetchImages
+    })
+}
+
+export const useUpdateTitle = () => {
+    return useMutation({
+        mutationFn: ({ imageId, newTitle }: { imageId: string, newTitle: string }) => updateTitle(imageId, newTitle)
+    })
+}
+
+export const useUpdateImage = () => {
+    return useMutation({
+        mutationFn: ({ imageId, imageUrl }: { imageId: string, imageUrl: string }) => updateImage(imageId, imageUrl)
     })
 }

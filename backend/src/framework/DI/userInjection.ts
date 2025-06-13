@@ -6,6 +6,8 @@ import { UserLoginController } from "../../adapters/controllers/user/authenticat
 import { VerifyOtpController } from "../../adapters/controllers/user/authentication/verifyOtpController";
 import { FindImagesOfUserController } from "../../adapters/controllers/user/imageUploading/findImagesOfUserController";
 import { ImageUploadingController } from "../../adapters/controllers/user/imageUploading/imageUploadingController";
+import { UpdateImageController } from "../../adapters/controllers/user/imageUploading/updateImageController";
+import { UpdateTitleController } from "../../adapters/controllers/user/imageUploading/updateTitleController";
 import { tokenValidationMiddleware } from "../../adapters/middlewares/refreshTokenCheckerMiddleware";
 import { ImageRepository } from "../../adapters/repository/imageRepository/imageRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
@@ -15,6 +17,8 @@ import { UserLoginUseCase } from "../../useCases/user/authentication/userLoginUs
 import { VerifyOtpUseCase } from "../../useCases/user/authentication/verifyOtpUseCase";
 import { FindImagesOfUserUseCase } from "../../useCases/user/imageUploading/findImagesOfUserUseCase";
 import { ImageUploadingUseCase } from "../../useCases/user/imageUploading/imageUploadingUseCase";
+import { UpdateImageUseCase } from "../../useCases/user/imageUploading/updateImageUseCase";
+import { updateTitleUseCase } from "../../useCases/user/imageUploading/updateTitleUseCase";
 
 import { HashPassword } from "../bcrypt/hashPassword";
 import { emailService } from "../services/emailService";
@@ -61,3 +65,11 @@ export const injectedRefreshTokenController = new RefreshTokenController(jwtServ
 
 //-------------------------------Middleware injection-------------------
 export const InjectedtokenValidationMiddleware = tokenValidationMiddleware(jwtService)
+
+//---------------------------------updating title -------------------
+const UpdatetitleUseCase = new updateTitleUseCase(imageDatabase)
+export const injectedUpdateTiteController = new UpdateTitleController(UpdatetitleUseCase)
+
+//----------------------------------update image------------------
+const updateImageUseCase = new UpdateImageUseCase(imageDatabase)
+export const injectedUpdateImageController = new UpdateImageController(updateImageUseCase)

@@ -25,10 +25,11 @@ interface ImageGalleryProps {
   userId?: string
   onUpload: (file: File, title: string) => Promise<void>
   onDelete: (imageId: string) => Promise<void>
-  onUpdateTitle: (imageId: string, newTitle: string) => Promise<void>
+  onUpdateTitle: (imageId: string, newTitle: string) => Promise<void>,
+  onUpdateImage: (imageId: string, image: File) => Promise<void>
 }
 
-export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle }: ImageGalleryProps) {
+export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle, onUpdateImage }: ImageGalleryProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [uploadTitle, setUploadTitle] = useState("")
   const [selectedImage, setSelectedImage] = useState<ImageType | null>(null)
@@ -37,6 +38,8 @@ export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle
   const [showPreview, setShowPreview] = useState<boolean>(false)
   const [imageString, setImageString] = useState('')
   const [imageFile, setImageFile] = useState<File | null>()
+  const [updatingImage, setUpdatingImage] = useState<boolean>(false)
+  const [updatingImageUrl, setUpdatingImageUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +58,15 @@ export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle
       return
     }
     setShowPreview(false)
+    if (updatingImage && updatingImageUrl) {
+      onUpdateImage(updatingImageUrl, imageFile)
+      setEditingTitle(null)
+      setUpdatingImage(false)
+      setUpdatingImageUrl(null)
+      setImageFile(null)
+      return
+    }
+    console.log('aksj')
     handleUpload(imageFile)
   }
 
@@ -72,6 +84,7 @@ export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle
 
     setIsUploading(true)
     try {
+
       await onUpload(file, uploadTitle)
       setUploadTitle("")
       if (fileInputRef.current) {
@@ -112,6 +125,19 @@ export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle
   const startEditingTitle = (image: ImageType) => {
     setEditingTitle(image._id || "")
     setNewTitle(image.title)
+  }
+
+  const handleEditImage = async (imageId: string) => {
+    setUpdatingImage(true)
+    setUpdatingImageUrl(imageId)
+    fileInputRef.current?.click()
+
+    // if (imageFile) {
+    //   await onUpdateImage(imageId, imageFile)
+    //   setUpdatingImage(false)
+
+    //   setUpdatingImageUrl(null)
+    // }
   }
 
 
@@ -232,7 +258,7 @@ export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle
                   {/* Title Section */}
                   <div className="p-4">
                     {editingTitle === image._id ? (
-                      <div className="flex space-x-2">
+                      <div className="flex flex-col gap-2 space-x-2">
                         <Input
                           value={newTitle}
                           onChange={(e) => setNewTitle(e.target.value)}
@@ -252,9 +278,16 @@ export default function ImageGallery({ images, onUpload, onDelete, onUpdateTitle
                         </Button>
                         <Button
                           size="sm"
+                          onClick={() => handleEditImage(image._id!)}
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          Change Image
+                        </Button>
+                        <Button
+                          size="sm"
                           variant="outline"
                           onClick={() => setEditingTitle(null)}
-                          className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                          className="border-gray-600 bg-gray-900 text-gray-300 hover:bg-gray-800"
                         >
                           <X className="w-4 h-4" />
                         </Button>

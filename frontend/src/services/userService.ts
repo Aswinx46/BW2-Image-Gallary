@@ -77,3 +77,22 @@ export const fetchImages = async () => {
     }
 }
 
+export const updateTitle = async (imageId: string, newTitle: string) => {
+    try {
+        const response = await axios.patch('/updateTitle', { imageId, newTitle })
+        return response.data
+    } catch (error) {
+        console.log('error while updating the title', error)
+        throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while updatin title')
+    }
+}
+
+export const updateImage = async (imageId: string, imageUrl: string) => {
+    try {
+        const response = await axios.patch('/updateImage', { imageId, imageUrl })
+        return response.data
+    } catch (error) {
+        console.log('error while updating image', error)
+        throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while updating image')
+    }
+}

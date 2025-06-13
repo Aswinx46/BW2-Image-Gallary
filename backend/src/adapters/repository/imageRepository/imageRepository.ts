@@ -1,4 +1,5 @@
 import { ImageType } from "../../../domain/entities/imageType";
+import { ImageUpdateOrderType } from "../../../domain/entities/updateImageOrderType";
 import { IimageRepositoryInterface } from "../../../domain/interface/repositoryInterface/imageRepositoryInterface";
 import { imageModel } from "../../../framework/database/models/imageModel";
 import { BaseRepository } from "../baseRepository/baseRepository";
@@ -24,5 +25,22 @@ export class ImageRepository extends BaseRepository<ImageType> implements Iimage
     async uploadImage(data: ImageType[]): Promise<ImageType[]> {
         const savedImages = await imageModel.insertMany(data);
         return savedImages
+    }
+
+    async updateImageOrder(images: ImageUpdateOrderType[]): Promise<boolean> {
+        const bulkOps = images.map((img: { _id: string; imageOrder: number }) => ({
+            updateOne: {
+                filter: { _id: img._id },
+                update: { imageOrder: img.imageOrder }
+            }
+        }));
+        await imageModel.bulkWrite(bulkOps);
+        return true
+    }
+    async updateImage(imageId: string, newImageUrl: string): Promise<ImageType | null> {
+        return await imageModel.findByIdAndUpdate(imageId, { imageUrl: newImageUrl }, { new: true })
+    }
+    async updateImageTitle(imageId: string, newTitle: string): Promise<ImageType | null> {
+        return await imageModel.findByIdAndUpdate(imageId, { title: newTitle }, { new: true })
     }
 }
