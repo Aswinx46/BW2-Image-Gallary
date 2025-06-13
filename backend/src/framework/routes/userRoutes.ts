@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedFindImagesController, injectedImageUploadController, injectedRefreshTokenController, injectedSendOtpController, injectedSignupController, InjectedtokenValidationMiddleware, injectedUpdateImageController, injectedUpdateTiteController, injectedUserLoginController, injectedVerifyOtpController } from "../DI/userInjection";
+import { injectedDeleteImageController, injectedFindImagesController, injectedImageUploadController, injectedRefreshTokenController, injectedSendOtpController, injectedSignupController, InjectedtokenValidationMiddleware, injectedUpdateImageController, injectedUpdateImageOrderControlller, injectedUpdateTiteController, injectedUserLoginController, injectedUserLogoutController, injectedVerifyOtpController } from "../DI/userInjection";
 
 export class UserRoute {
     public userRouter: Router
@@ -34,6 +34,15 @@ export class UserRoute {
         })
         this.userRouter.patch('/updateImage', (req: Request, res: Response) => {
             injectedUpdateImageController.handleUpdateImag(req, res)
+        })
+        this.userRouter.put('/changeOrder', InjectedtokenValidationMiddleware, (req: Request, res: Response) => {
+            injectedUpdateImageOrderControlller.handleChangeOrder(req, res)
+        })
+        this.userRouter.delete('/deleteImage/:imageUrl', InjectedtokenValidationMiddleware, (req: Request, res: Response) => {
+            injectedDeleteImageController.handleDelete(req, res)
+        })
+        this.userRouter.post('/logout', InjectedtokenValidationMiddleware, (req: Request, res: Response) => {
+            injectedUserLogoutController.handleLogout(req, res)
         })
     }
 }

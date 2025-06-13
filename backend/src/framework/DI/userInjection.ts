@@ -3,10 +3,13 @@ import { RefreshTokenController } from "../../adapters/controllers/user/authenti
 import { SendOtpController } from "../../adapters/controllers/user/authentication/sendOtpController";
 import { SignUpController } from "../../adapters/controllers/user/authentication/signUpController";
 import { UserLoginController } from "../../adapters/controllers/user/authentication/userLoginController";
+import { UserLogoutController } from "../../adapters/controllers/user/authentication/userLogoutController";
 import { VerifyOtpController } from "../../adapters/controllers/user/authentication/verifyOtpController";
+import { DeleteImageController } from "../../adapters/controllers/user/imageUploading/deleteImageController";
 import { FindImagesOfUserController } from "../../adapters/controllers/user/imageUploading/findImagesOfUserController";
 import { ImageUploadingController } from "../../adapters/controllers/user/imageUploading/imageUploadingController";
 import { UpdateImageController } from "../../adapters/controllers/user/imageUploading/updateImageController";
+import { UpdateImageOrderController } from "../../adapters/controllers/user/imageUploading/updateImageOrderController";
 import { UpdateTitleController } from "../../adapters/controllers/user/imageUploading/updateTitleController";
 import { tokenValidationMiddleware } from "../../adapters/middlewares/refreshTokenCheckerMiddleware";
 import { ImageRepository } from "../../adapters/repository/imageRepository/imageRepository";
@@ -14,9 +17,12 @@ import { UserRepository } from "../../adapters/repository/userRepository/userRep
 import { SendOtpUseCase } from "../../useCases/user/authentication/sendOtpUseCase";
 import { UserSignupUseCase } from "../../useCases/user/authentication/signupUseCase";
 import { UserLoginUseCase } from "../../useCases/user/authentication/userLoginUseCase";
+import { UserLogoutUseCase } from "../../useCases/user/authentication/userLogoutUseCase";
 import { VerifyOtpUseCase } from "../../useCases/user/authentication/verifyOtpUseCase";
+import { DeleteImageUseCase } from "../../useCases/user/imageUploading/deleteImageUseCase";
 import { FindImagesOfUserUseCase } from "../../useCases/user/imageUploading/findImagesOfUserUseCase";
 import { ImageUploadingUseCase } from "../../useCases/user/imageUploading/imageUploadingUseCase";
+import { UpdateImageOrderUseCase } from "../../useCases/user/imageUploading/updateImageOrder";
 import { UpdateImageUseCase } from "../../useCases/user/imageUploading/updateImageUseCase";
 import { updateTitleUseCase } from "../../useCases/user/imageUploading/updateTitleUseCase";
 
@@ -73,3 +79,15 @@ export const injectedUpdateTiteController = new UpdateTitleController(Updatetitl
 //----------------------------------update image------------------
 const updateImageUseCase = new UpdateImageUseCase(imageDatabase)
 export const injectedUpdateImageController = new UpdateImageController(updateImageUseCase)
+
+//----------------------------------update image order ----------------------------
+const updateImageOrderUseCase = new UpdateImageOrderUseCase(imageDatabase)
+export const injectedUpdateImageOrderControlller = new UpdateImageOrderController(updateImageOrderUseCase)
+
+//------------------------------------delete image------------------------
+const deleteImageUseCase = new DeleteImageUseCase(imageDatabase)
+export const injectedDeleteImageController = new DeleteImageController(deleteImageUseCase)
+
+//---------------------------------------user logout--------------------------------
+const userLogoutUseCase = new UserLogoutUseCase(userRepository, jwtService)
+export const injectedUserLogoutController = new UserLogoutController(userLogoutUseCase)

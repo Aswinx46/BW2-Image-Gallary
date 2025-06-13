@@ -1,5 +1,6 @@
-import { fetchImages, updateImage, updateTitle, uploadImageCloudinary, uploadImageToTheDB, userLogin, userSendOtp, userSignup, userVerifyOtp } from "@/services/userService"
-import type { ImageType } from "@/types/imageType"
+import { deleteImage, fetchImages, updateImage, updateOrder, updateTitle, uploadImageCloudinary, uploadImageToTheDB, userLogin, userLogout, userSendOtp, userSignup, userVerifyOtp } from "@/services/userService"
+import type { ImageTypeWithoutId } from "@/types/imageType"
+import type { ImageUpdateOrderType } from "@/types/updateOrderType"
 import type { UserRegisterType } from "@/types/userRegisterType"
 import { useMutation, useQuery } from "@tanstack/react-query"
 
@@ -35,7 +36,7 @@ export const useUploadImageToCloudinary = () => {
 
 export const useUploadImageToDB = () => {
     return useMutation({
-        mutationFn: (data: ImageType) => uploadImageToTheDB(data)
+        mutationFn: (data: ImageTypeWithoutId) => uploadImageToTheDB(data)
     })
 }
 
@@ -55,5 +56,23 @@ export const useUpdateTitle = () => {
 export const useUpdateImage = () => {
     return useMutation({
         mutationFn: ({ imageId, imageUrl }: { imageId: string, imageUrl: string }) => updateImage(imageId, imageUrl)
+    })
+}
+
+export const useChangeImageOrder = () => {
+    return useMutation({
+        mutationFn: (data: ImageUpdateOrderType[]) => updateOrder(data)
+    })
+}
+
+export const useDeleteImage = () => {
+    return useMutation({
+        mutationFn: (imageId: string) => deleteImage(imageId)
+    })
+}
+
+export const useUserLogout = () => {
+    return useMutation({
+        mutationFn: userLogout
     })
 }

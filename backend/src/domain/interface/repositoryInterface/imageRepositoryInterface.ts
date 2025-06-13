@@ -9,4 +9,5 @@ export interface IimageRepositoryInterface extends IbaseRepositoryInterface<Imag
     updateImageOrder(images: ImageUpdateOrderType[]): Promise<boolean>
     updateImageTitle(imageId: string, newTitle: string): Promise<ImageType | null>
     updateImage(imageId: string, newImageUrl: string): Promise<ImageType | null>
+    // deleteImage(imageId: string): Promise<boolean>
 }

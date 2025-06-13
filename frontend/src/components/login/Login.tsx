@@ -39,7 +39,7 @@ function Login() {
                 localStorage.setItem('user', data.user.email)
                 localStorage.setItem('userId', data.user._id)
                 toast('user Logged')
-                navigate('/home')
+                navigate('/home', { replace: true })
             },
             onError: (err) => {
                 toast(err.message)

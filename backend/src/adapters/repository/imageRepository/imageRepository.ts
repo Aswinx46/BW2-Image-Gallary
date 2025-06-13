@@ -43,4 +43,5 @@ export class ImageRepository extends BaseRepository<ImageType> implements Iimage
     async updateImageTitle(imageId: string, newTitle: string): Promise<ImageType | null> {
         return await imageModel.findByIdAndUpdate(imageId, { title: newTitle }, { new: true })
     }
+   
 }

@@ -2,7 +2,8 @@ import { isAxiosError } from "axios";
 import axios from '../axios/userAxios'
 import type { UserRegisterType } from "@/types/userRegisterType";
 import cloudAxios from 'axios'
-import type { ImageType } from "@/types/imageType";
+import type {  ImageTypeWithoutId } from "@/types/imageType";
+import type { ImageUpdateOrderType } from "@/types/updateOrderType";
 export const userSignup = async (user: UserRegisterType) => {
     try {
         const response = await axios.post('/signUp', { email: user.email, password: user.password })
@@ -57,7 +58,7 @@ export const uploadImageCloudinary = async (formdata: FormData) => {
     }
 }
 
-export const uploadImageToTheDB = async (data: ImageType) => {
+export const uploadImageToTheDB = async (data: ImageTypeWithoutId) => {
     try {
         const response = await axios.post('/upload', { data })
         return response.data
@@ -94,5 +95,36 @@ export const updateImage = async (imageId: string, imageUrl: string) => {
     } catch (error) {
         console.log('error while updating image', error)
         throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while updating image')
+    }
+}
+
+export const updateOrder = async (data: ImageUpdateOrderType[]) => {
+    try {
+        const response = await axios.put('/changeOrder', { data })
+        return response.data
+    } catch (error) {
+        console.log('error while updating image order', error)
+        throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while updating image order')
+    }
+}
+
+
+export const deleteImage = async (imageId: string) => {
+    try {
+        const response = await axios.delete(`/deleteImage/${imageId}`,)
+        return response.data
+    } catch (error) {
+        console.log('error while deleting the image', error)
+        throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while deleting the image')
+    }
+}
+
+export const userLogout = async () => {
+    try {
+        const response = await axios.post('/logout')
+        return response.data
+    } catch (error) {
+        console.log('error while loging out', error)
+        throw new Error(isAxiosError(error) ? error.response?.data.error : "error while loging out")
     }
 }
