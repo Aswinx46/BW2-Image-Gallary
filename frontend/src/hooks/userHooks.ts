@@ -1,4 +1,4 @@
-import { deleteImage, fetchImages, updateImage, updateOrder, updateTitle, uploadImageCloudinary, uploadImageToTheDB, userLogin, userLogout, userSendOtp, userSignup, userVerifyOtp } from "@/services/userService"
+import { deleteImage, fetchImages, updateImage, updateOrder, updateTitle, uploadImageCloudinary, uploadImageToTheDB, userChangePassword, userLogin, userLogout, userSendOtp, userSignup, userVerifyOtp } from "@/services/userService"
 import type { ImageTypeWithoutId } from "@/types/imageType"
 import type { ImageUpdateOrderType } from "@/types/updateOrderType"
 import type { UserRegisterType } from "@/types/userRegisterType"
@@ -74,5 +74,11 @@ export const useDeleteImage = () => {
 export const useUserLogout = () => {
     return useMutation({
         mutationFn: userLogout
+    })
+}
+
+export const useChangePassword = () => {
+    return useMutation({
+        mutationFn: ({ id, oldPassword, newPassword }: { id: string, oldPassword: string, newPassword: string }) => userChangePassword(id, oldPassword, newPassword)
     })
 }

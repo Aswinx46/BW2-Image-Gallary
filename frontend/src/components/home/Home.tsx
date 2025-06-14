@@ -1,10 +1,13 @@
-import { useChangeImageOrder, useDeleteImage, useFetchImages, useUpdateImage, useUpdateTitle, useUploadImageToCloudinary, useUploadImageToDB } from '@/hooks/userHooks'
+import { useChangeImageOrder, useChangePassword, useDeleteImage, useFetchImages, useUpdateImage, useUpdateTitle, useUploadImageToCloudinary, useUploadImageToDB, useUserLogout } from '@/hooks/userHooks'
 import ImageGallery from './ImageGallery'
 import { toast } from 'sonner'
 import type { ImageType } from '@/types/imageType'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import type { ImageUpdateOrderType } from '@/types/updateOrderType'
+import { Button } from '../ui/button'
+import { useNavigate } from 'react-router-dom'
+import PasswordChangeModal from '../otherComponents/changePasswordModal'
 
 function Home() {
 
@@ -16,9 +19,12 @@ function Home() {
     const fetchImages = useFetchImages()
     const changeOrder = useChangeImageOrder()
     const deleteImage = useDeleteImage()
+    const logout = useUserLogout()
+    const changePassword = useChangePassword()
     const [images, setImages] = useState<ImageType[] | []>([])
+    const [showChangePasswordModal, setShowChangePasswordModal] = useState<boolean>(false)
     const queryClient = useQueryClient()
-
+    const navigate = useNavigate()
     const imagesFromBackend: ImageType[] = fetchImages?.data?.images
     useEffect(() => {
         setImages(imagesFromBackend)
@@ -147,9 +153,46 @@ function Home() {
 
     }
 
+    const handleLogout = () => {
+        logout.mutate(undefined, {
+            onSuccess: () => {
+                localStorage.removeItem('user')
+                localStorage.removeItem('userId')
+                navigate('/')
+                toast('user  LoggedOut')
+            },
+            onError: (err) => {
+                toast(err.message)
+            }
+        })
+    }
+
+    const handleChangePassword = (oldPassword: string, newPassword: string) => {
+        const id = localStorage.getItem('userId')
+        if (!id) {
+            toast("Please Login Again")
+            navigate('/', { replace: true })
+            return
+        }
+        changePassword.mutate({ id, oldPassword, newPassword }, {
+            onSuccess: () => {
+                toast('Password Changed')
+                setShowChangePasswordModal(false)
+            },
+            onError: (err) => {
+                toast(err.message)
+
+            }
+        })
+    }
+
     return (
-        <div>
-            {images && <ImageGallery images={images} onDelete={handleDelete} onUpdateTitle={handleUpdateTitle} onUpload={handleUploadImage} userId={userId!} onUpdateImage={handleUpdateImage} onChangeOrder={handleChangeOrder} />}        </div>
+        <div className='flex justify-center items-center bg-black h-full'>
+            <Button className='bg-blue-600 self-start self mt-12' onClick={() => setShowChangePasswordModal(true)}>Change Password</Button>
+            {showChangePasswordModal && <PasswordChangeModal isOpen={showChangePasswordModal} onClose={() => setShowChangePasswordModal(false)} onPasswordChange={handleChangePassword} />}
+            {images && <ImageGallery images={images} onDelete={handleDelete} onUpdateTitle={handleUpdateTitle} onUpload={handleUploadImage} userId={userId!} onUpdateImage={handleUpdateImage} onChangeOrder={handleChangeOrder} />}
+            <Button className='bg-red-600 self-start self mt-12' onClick={handleLogout}>LOGOUT</Button>
+        </div>
     )
 }
 

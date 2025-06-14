@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { injectedDeleteImageController, injectedFindImagesController, injectedImageUploadController, injectedRefreshTokenController, injectedSendOtpController, injectedSignupController, InjectedtokenValidationMiddleware, injectedUpdateImageController, injectedUpdateImageOrderControlller, injectedUpdateTiteController, injectedUserLoginController, injectedUserLogoutController, injectedVerifyOtpController } from "../DI/userInjection";
+import { injectedChangePasswordController, injectedDeleteImageController, injectedFindImagesController, injectedImageUploadController, injectedRefreshTokenController, injectedSendOtpController, injectedSignupController, InjectedtokenValidationMiddleware, injectedUpdateImageController, injectedUpdateImageOrderControlller, injectedUpdateTiteController, injectedUserLoginController, injectedUserLogoutController, injectedVerifyOtpController } from "../DI/userInjection";
 
 export class UserRoute {
     public userRouter: Router
@@ -43,6 +43,9 @@ export class UserRoute {
         })
         this.userRouter.post('/logout', InjectedtokenValidationMiddleware, (req: Request, res: Response) => {
             injectedUserLogoutController.handleLogout(req, res)
+        })
+        this.userRouter.patch('/changePassword', InjectedtokenValidationMiddleware, (req: Request, res: Response) => {
+            injectedChangePasswordController.handleChangePassword(req, res)
         })
     }
 }

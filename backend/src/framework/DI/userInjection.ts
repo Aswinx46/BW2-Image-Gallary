@@ -1,4 +1,5 @@
 
+import { ChangePasswordController } from "../../adapters/controllers/user/authentication/changePasswordController";
 import { RefreshTokenController } from "../../adapters/controllers/user/authentication/refreshTokenController";
 import { SendOtpController } from "../../adapters/controllers/user/authentication/sendOtpController";
 import { SignUpController } from "../../adapters/controllers/user/authentication/signUpController";
@@ -14,6 +15,7 @@ import { UpdateTitleController } from "../../adapters/controllers/user/imageUplo
 import { tokenValidationMiddleware } from "../../adapters/middlewares/refreshTokenCheckerMiddleware";
 import { ImageRepository } from "../../adapters/repository/imageRepository/imageRepository";
 import { UserRepository } from "../../adapters/repository/userRepository/userRepository";
+import { ChangePasswordUseCase } from "../../useCases/user/authentication/changePasswordUseCase";
 import { SendOtpUseCase } from "../../useCases/user/authentication/sendOtpUseCase";
 import { UserSignupUseCase } from "../../useCases/user/authentication/signupUseCase";
 import { UserLoginUseCase } from "../../useCases/user/authentication/userLoginUseCase";
@@ -91,3 +93,7 @@ export const injectedDeleteImageController = new DeleteImageController(deleteIma
 //---------------------------------------user logout--------------------------------
 const userLogoutUseCase = new UserLogoutUseCase(userRepository, jwtService)
 export const injectedUserLogoutController = new UserLogoutController(userLogoutUseCase)
+
+//---------------------------------------------user password changed ------------------------
+const changePasswordUseCase = new ChangePasswordUseCase(userRepository, hashPassword)
+export const injectedChangePasswordController = new ChangePasswordController(changePasswordUseCase)

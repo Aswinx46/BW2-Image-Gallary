@@ -2,7 +2,7 @@ import { isAxiosError } from "axios";
 import axios from '../axios/userAxios'
 import type { UserRegisterType } from "@/types/userRegisterType";
 import cloudAxios from 'axios'
-import type {  ImageTypeWithoutId } from "@/types/imageType";
+import type { ImageTypeWithoutId } from "@/types/imageType";
 import type { ImageUpdateOrderType } from "@/types/updateOrderType";
 export const userSignup = async (user: UserRegisterType) => {
     try {
@@ -126,5 +126,15 @@ export const userLogout = async () => {
     } catch (error) {
         console.log('error while loging out', error)
         throw new Error(isAxiosError(error) ? error.response?.data.error : "error while loging out")
+    }
+}
+
+export const userChangePassword = async (id: string, oldPassword: string, newPassword: string) => {
+    try {
+        const response = await axios.patch('/changePassword', { id, oldPassword, newPassword })
+        return response.data
+    } catch (error) {
+        console.log('error while changing the password', error)
+        throw new Error(isAxiosError(error) ? error.response?.data.error : 'error while chaning the password')
     }
 }
