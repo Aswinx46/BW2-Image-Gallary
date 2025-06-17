@@ -84,7 +84,7 @@ function SignUp() {
                     toast('OTP Verified')
                     setIsOpen(false)
                     createUser()
-                    navigate('/login')
+                    navigate('/')
                 },
                 onError: (err) => {
                     console.log(err)
