@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=${PORT}
+      - ORIGIN=${ORIGIN}
+      - MONGODB=${MONGODB}
+      - NODEMAILER_EMAIL=${NODEMAILER_EMAIL}
+      - NODEMAILER_PASSWORD=${NODEMAILER_PASSWORD}
+      - ACCESSTOKEN_SECRET_KEY=${ACCESSTOKEN_SECRET_KEY}
+      - REFRESHTOKEN_SECRET_KEY=${REFRESHTOKEN_SECRET_KEY}
